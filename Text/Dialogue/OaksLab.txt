@@ -110,6 +110,24 @@ special, just for you.[A][X]
 capture Pokémon[ToggleRed] in this mode.[A][N]
 But you may still struggle through...[A][X]
 
+## LittleCupMessageText
+[OpenMidRight][LoadOak][OpenMidRight]Hello, [Tact]. You [ToggleRed]cannot evolve[NL]
+Pokémon[ToggleRed] in this mode.[A][N]
+You cannot catch single-[N]
+stage Pokémon either.[A][N]
+But you may still struggle through...[A][X]
+
+## VeslyMessageText
+[OpenMidRight][LoadOak][OpenMidRight]Hello, almighty [Tact]. You [ToggleRed]cannot capture/[NL]
+evolve Pokémon[ToggleRed] in this mode.[A][N]
+Yes, I beat Lunatic mode like this.[N]
+So it's possible.[A][X]
+
+## OakMessageText
+[OpenMidRight][LoadOak][OpenMidRight]Hello, me. I [ToggleRed]cannot capture/[NL]
+evolve Pokémon[ToggleRed] in this mode.[A][N]
+But I'll be fine.[A][X]
+
 ## NiceTryText
 [OpenMidRight][LoadOak][OpenMidRight]Oh, you wanted[NL]
 [Tact]?[A][NL]
@@ -135,6 +153,12 @@ Pandan[X]
 
 ## DerName
 Der[X]
+
+## OakName
+Oak[X]
+
+## BillName
+Bill[X]
 
 
 ## bpatName
@@ -184,13 +208,15 @@ Ash[X]
 Red[X]
 ## GaryName
 Gary[X]
+## LittleCupName
+LittleCup[X]
 
 ## BrockName
 Brock[X]
 ## MistyName
 Misty[X]
 ## LtSurgeName
-Lt Surge[X]
+Lt. Surge[X]
 ## ErikaName
 Erika[X]
 ## KogaName

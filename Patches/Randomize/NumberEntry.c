@@ -23,19 +23,21 @@ const struct ProcCmd SeedMenuProcCmd[] =
 {
     PROC_CALL(LockGame),
     PROC_CALL(BMapDispSuspend),
-	PROC_CALL(StartFadeFromBlack), 
-
+	PROC_CALL(StartFastFadeFromBlack), 
+	//PROC_REPEAT(CheckInputForRandomSeed),
+	PROC_REPEAT(WaitForFade), 
     PROC_YIELD,
 	PROC_REPEAT(SeedMenuLoop), 
-
+	PROC_CALL(StartFastFadeToBlack), 
+	PROC_REPEAT(WaitForFade), 
     PROC_CALL(UnlockGame),
     PROC_CALL(BMapDispResume),
     PROC_END,
 };
 
-#define START_X 19
+#define START_X 21
 #define Y_HAND 11
-#define NUMBER_X 17
+#define NUMBER_X 19
 typedef const struct {
   u32 x;
   u32 y;
@@ -53,7 +55,7 @@ LocationTable CursorLocationTable[] = {
 };
 
 const u32 DigitDecimalTable[] = { 
-1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000
+1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
 }; 
 
 static int GetMaxDigits(int number) { 
@@ -110,9 +112,18 @@ void StartNumberEntry(ProcPtr parent) {
 		#else 
 		proc->seed = gEventSlots[1]; // initial seed 
 		#endif 
+		
+		#ifdef POKEMBLEM_VERSION 
+		proc->seed &= 0x2FFFFFFF;
+		BG_Fill(gBG3TilemapBuffer, 0);
+		BG_Fill(gBG2TilemapBuffer, 0);
+		BG_EnableSyncByMask(BG3_SYNC_BIT);
+		BG_EnableSyncByMask(BG2_SYNC_BIT);
+		#else 
 		while (proc->seed > gEventSlots[3]) { proc->seed = proc->seed / 2; } // s3 as max 
 		while (proc->seed < 0) { proc->seed = (proc->seed * 2)+1; } 
 		if (proc->seed < gEventSlots[2]) { proc->seed = gEventSlots[2]; } // s2 as min 
+		#endif 
 		proc->digit = 0; 
 		//ResetText();
 		ResetTextFont();
@@ -174,18 +185,18 @@ void InitMultiline(struct Text th[], int lines, int x, int y, int bg, int color,
 	if (!lines) { return; } 
     int i;
     for (i = 0; i < lines; i++) { 
-        ClearText(&gPrepMainMenuTexts[i]);
+        ClearText(&th[i]);
 	} 
 	
 	char *str = GetStringFromIndex(textID);
 	
 	int width = 0; 
 	int max_width = 0; 
-	int height = 2 * (lines - 1) + y; 
+	int height = 2 * lines; 
 
 
 
-    BG_EnableSyncByMask(BG_SYNC_BIT(bg));
+
 	for (i = 0; i < lines; i++) { 
 		width = (GetStringTextLen(str)+8)/8; 
         InitText(&th[i], width);
@@ -201,7 +212,7 @@ void InitMultiline(struct Text th[], int lines, int x, int y, int bg, int color,
     TileMap_FillRect(
         TILEMAP_LOCATED(bg_table[bg], x, y),
         max_width+x, height+y, 0);
-	
+    BG_EnableSyncByMask(BG_SYNC_BIT(bg));
 }
 
 int CountStrLines(char *str) {
@@ -300,6 +311,7 @@ static void SeedMenuLoop(SeedMenuProc* proc) {
 	if (!keys) { keys = sKeyStatusBuffer.repeatedKeys; } 
 	if ((keys & START_BUTTON)||(keys & A_BUTTON)) { //press A or Start to continue
 		#ifdef POKEMBLEM_VERSION 
+		if (!proc->seed) { proc->seed = 12345; } // don't use 0 
 		*StartTimeSeedRamLabel = proc->seed; 
 		#endif 
 		gEventSlots[0xC] = proc->seed; 

@@ -30,6 +30,7 @@ RandomizeBossClassesFlag_Link: ; WORD RandomizeBossClassesFlag
 RandomizeGrowthsFlag_Link: ; WORD RandomizeGrowthsFlag
 RandomizeFoundItemsFlag_Link: ; WORD RandomizeFoundItemsFlag
 RandomizeBaseStatsFlag_Link: ; WORD RandomizeBaseStatsFlag
+RandomizeSkillsFlag_Link: ; WORD RandomizeSkillsFlag
 
 
 
@@ -57,34 +58,55 @@ POIN RandomItemTier0List
 POIN RandomItemTier1List 
 POIN RandomItemTier2List 
 POIN RandomItemTier3List 
+POIN RandomItemTier3List // It returns 1 tier higher half the time, so this is necessary 
+POIN RandomItemTier3List // unnecessary probably 
 
 
 #define Tm(ID) "ID<<8|SpellScrollID"
 #define Skl(ID) "ID<<8|SkillScrollID"
 #define Acc(ID) "ID<<8|SkillAccOne+((ID&0xC0)>>6)"
+#define StatAcc(ID) "ID<<8|StatAccessory"
 
-
-
+ALIGN 4 
+RandomSkillsTable:
+BYTE ReliefID FocusID PatienceID ParagonID PrescienceID StrongRiposteID OpportunistID VigilanceID PragmaticID 
+BYTE InsightID PerfectionistID ChivalryID WindDiscipleID WaryFighterID RenewalID 
+BYTE DazzleID LifetakerID LifeAndDeathID CantoPlusID 
+BYTE SteadyStanceID WardingStanceID ExpShareID VantagePlusID 
+BYTE MiracleID AmaterasuID FieryBloodID DartingStanceID FierceStanceID SilentPrideID QuickDrawID 
+BYTE WrathID AnathemaID ChargeID 
+BYTE Intimidate2ID GuardBreakerID DowngradeID SilphScopeID 
+BYTE CounterID CounterMagicID PoisonStrikeID GrislyWoundID 
+// GaleforceID BlossomID FuryID SavageBlowID 
+// CleatsID SurfBoardID RockyHelmetSkillID  HoverBoardID
+BYTE 0 // Terminator 
 
 ALIGN 4 
 RandomItemTier0List: // if durability is 0, give as full durability 
 SHORT JellyDonut
-SHORT Tm(Doubleslap) Tm(DoubleHit) Tm(Harden) Tm(Flash) Tm(Leer) Tm(ThunderWave) Tm(PoisonPowder) Tm(PoisonGas) Tm(AttackPulse) Tm(RockThrow) Tm(RockTomb) Tm(IcyWind) Tm(Confusion) Tm(Magnitude) Tm(Gust) Tm(Bite) 
-SHORT Tm(Growl) Tm(LeafFlurry) Tm(Ember) Tm(MudShot) Tm(WaterGun) Tm(Bubble) Tm(Clamp) Tm(KarateChop) Tm(Snarl) Tm(Acid) Tm(HornAttack) Tm(PayDay) Tm(Pound) Tm(QuickAttack) Tm(Rage) Tm(SandAttack) Tm(Scratch) 
-SHORT Tm(Tackle) Tm(TailWhip) Tm(Splash) Tm(Absorb) Tm(GuardMove) Tm(ThunderShock) Tm(VineWhip) Tm(RazorLeaf) Tm(DoubleKick) Tm(Peck) Tm(FocusEnergy) Tm(PoisonSting) Tm(Smog) Tm(StringShot) Tm(Twister) 
-SHORT Tm(PinMissile) Tm(FuryCutter) Tm(ThiefAtt) Tm(ConfuseRay) Tm(Lick) 
+// These ones are kinda pointless 
+//SHORT Tm(ConfuseRay) Tm(Lick) Tm(Doubleslap) Tm(DoubleHit) Tm(Harden) Tm(RockThrow) Tm(StringShot) Tm(Peck) Tm(DoubleKick) Tm(Growl) Tm(PoisonGas) 
+//SHORT Tm(Tackle) Tm(GuardMove) Tm(Absorb) Tm(Snarl) Tm(Acid) Tm(HornAttack) Tm(Bubble) Tm(Pound) Tm(Rage) Tm(Scratch) Tm(PoisonSting) Tm(Smog) 
+SHORT Tm(Splash) // Keeping this because lol 
+SHORT SuperRepel EscapeRope 
+SHORT Tm(Flash) Tm(Leer) Tm(ThunderWave) Tm(PoisonPowder) Tm(AttackPulse) Tm(RockTomb) Tm(IcyWind) Tm(Confusion) Tm(Magnitude) Tm(Gust) Tm(Bite) 
+SHORT Tm(LeafFlurry) Tm(Ember) Tm(MudShot) Tm(WaterGun) Tm(KarateChop) Tm(PayDay) Tm(QuickAttack) Tm(SandAttack) 
+SHORT Tm(TailWhip) Tm(Thundershock) Tm(VineWhip) Tm(RazorLeaf) Tm(FocusEnergy) Tm(Twister) 
+SHORT Tm(PinMissile) Tm(FuryCutter) Tm(ThiefAtt) 
 SHORT Skl(ReliefID) Skl(FocusID) Skl(PatienceID) Skl(ParagonID) Skl(PrescienceID) Skl(StrongRiposteID) // not tier 0, but an example (skill scroll) 
-SHORT // not tier 0, but an example (accessory) 
+SHORT StatAcc(MuscleBand_BoostIndex) StatAcc(WiseGlasses_BoostIndex) StatAcc(LuckyBracer_BoostIndex) StatAcc(LeatherShield_BoostIndex) StatAcc(BronzeShield_BoostIndex)
+SHORT StatAcc(OldWard_BoostIndex) StatAcc(WornBoots_BoostIndex) StatAcc(OldScope_BoostIndex) StatAcc(EnergyBand_BoostIndex)
 SHORT 0 // Terminator 
 
 ALIGN 4 
 RandomItemTier1List: // if durability is 0, give as full durability 
-SHORT SuperPotion
-SHORT Tm(Constrict) Tm(Glare) Tm(RecoverMove) Tm(BodySlam) Tm(Headbutt) Tm(MegaPunch) Tm(MegaKick) Tm(LeechLife) Tm(BugBite) Tm(SignalBeam) Tm(BubbleBeam) Tm(WaterPulse) Tm(AirSlash) Tm(WingAttack) Tm(Fly) 
+SHORT SuperPotion Revive 
+SHORT Tm(Clamp) Tm(Constrict) Tm(Glare) Tm(RecoverMove) Tm(BodySlam) Tm(Headbutt) Tm(MegaPunch) Tm(MegaKick) Tm(LeechLife) Tm(BugBite) Tm(SignalBeam) Tm(BubbleBeam) Tm(WaterPulse) Tm(AirSlash) Tm(WingAttack) Tm(Fly) 
 SHORT Tm(AuroraBeam) Tm(Scorch) Tm(MagicalLeaf) Tm(GrassKnot) Tm(Dragonbreath) Tm(MudBomb) Tm(Dig) Tm(MetalClaw) Tm(MirrorShot) Tm(Slam) Tm(Slash) Tm(Swift) Tm(FlameWheel) Tm(FireSpin) Tm(HoneClaws) 
 SHORT Tm(ShockWave) Tm(Spark) Tm(Avalanche) Tm(RollingKick) Tm(LowKick) Tm(Rollout) Tm(DragonRage) Tm(UTurn) Tm(NightShade) Tm(HexAtt) Tm(NightDaze)
 SHORT Skl(OpportunistID) Skl(VigilanceID) Skl(PragmaticID) Skl(InsightID) Skl(PerfectionistID) Skl(ChivalryID) Skl(WindDiscipleID) 
-SHORT Acc(WaryFighterID) Acc(RockyHelmetSkillID) Acc(RenewalID) Acc(PoisonStrikeID) Acc(DazzleID) Acc(CounterID) Acc(CounterMagicID) Acc(ShellBellID) Acc(Intimidate2ID) Acc(GuardBreakerID) Acc(DowngradeID)
+SHORT MoonStone LinkStone ThunderStone LeafStone WaterStone FireStone 
+SHORT Acc(WaryFighterID) Acc(RockyHelmetSkillID) Acc(RenewalID) Acc(PoisonStrikeID) Acc(DazzleID) Acc(CounterID) Acc(CounterMagicID) Acc(LifetakerID) Acc(Intimidate2ID) Acc(GuardBreakerID) Acc(DowngradeID)
 SHORT Acc(LifeAndDeathID) Acc(CantoPlusID) Acc(SteadyStanceID) Acc(WardingStanceID) Acc(ExpShareID) Acc(VantagePlusID) 
 SHORT 0 // Terminator 
 
@@ -92,19 +114,33 @@ ALIGN 4
 RandomItemTier2List: // if durability is 0, give as full durability 
 SHORT HyperPotion MaxPotion
 SHORT Tm(CalmMind) Tm(BulkUp) Tm(Screech) Tm(Agility) Tm(PetalDance) Tm(LeafBlade) Tm(Surf) Tm(Flamethrower) Tm(IceBeam) Tm(ShadowBall) Tm(DarkPulse) Tm(NightSlash) Tm(EarthPower) Tm(Earthquake)  
-SHORT Tm(PoisonJab) Tm(Sludge) Tm(Thunderbolt) Tm(RockSlide) Tm(AncientPower) Tm(X-Scissor) Tm(BugBuzz) Tm(FirePunch) Tm(ThunderPunch) Tm(IcePunch) Tm(DrillPeck) Tm(TriAttack) 
+SHORT Tm(PoisonJab) Tm(Sludge) Tm(Thunderbolt) Tm(RockSlide) Tm(Ancientpower) Tm(XScissor) Tm(BugBuzz) Tm(FirePunch) Tm(ThunderPunch) Tm(IcePunch) Tm(DrillPeck) Tm(TriAttack) 
 SHORT Tm(IronTail) Tm(JumpKick) Tm(HyperFang) Tm(FlashCannon) Tm(MetalSound) Tm(SuperFang) Tm(TakeDown) Tm(Thrash) Tm(Waterfall) Tm(Submission) Tm(SeismicToss) Tm(DragonClaw)
 SHORT Skl(RenewalID) Skl(FieryBloodID) Skl(DartingStanceID) Skl(FierceStanceID) Skl(SilentPrideID) Skl(QuickDrawID) Skl(WrathID) Skl(AnathemaID) Skl(ChargeID)
 SHORT Acc(FuryID) Acc(CleatsID) Acc(SurfBoardID) Acc(SilphScopeID) Acc(SavageBlowID) Acc(GrislyWoundID) Acc(MiracleID) Acc(AmaterasuID) Acc(SurfBoardID) Acc(SilphScopeID) Acc(SavageBlowID) Acc(GrislyWoundID) Acc(HoverBoardID)
+SHORT HPUp Protein Carbos Iron Zinc Calcium HoplonGuard2 SacredStone
+SHORT StatAcc(MuscleBandT2_BoostIndex) StatAcc(WiseGlassesT2_BoostIndex) StatAcc(StuddedShield_BoostIndex) StatAcc(SteelShield_BoostIndex) 
+SHORT StatAcc(EnhancedWard_BoostIndex) StatAcc(SilphScope_BoostIndex) StatAcc(LuckyBracerT3_BoostIndex) 
 SHORT 0 // Terminator 
 
 ALIGN 4 
 RandomItemTier3List: // if durability is 0, give as full durability 
 SHORT Tm(Amnesia) Tm(DoubleEdge) Tm(Explosion) Tm(FireBlast) Tm(SacredFire) Tm(Blizzard) Tm(SolarBeam) Tm(SkyAttack) Tm(ThunderMove) Tm(VoltTackle) Tm(Fissure) Tm(Psychic) Tm(HiJumpKick)
-SHORT Tm(HyperBeam) Tm(HydroPump) Tm(MegaHorn) Tm(Outrage) Tm(MeteorMash) Tm(SwordsDance) Tm(Guillotine) Tm(HornDrill) Tm(Crabhammer)
+SHORT Tm(HyperBeam) Tm(HydroPump) Tm(Megahorn) Tm(Outrage) Tm(MeteorMash) Tm(SwordsDance) Tm(Guillotine) Tm(HornDrill) Tm(Crabhammer)
 SHORT Skl(SavageBlowID) Skl(GrislyWoundID) Skl(FuryID) Skl(PoisonStrikeID) Skl(MiracleID)
-SHORT Acc(GaleforceID) Acc(BlossomID)
+SHORT Acc(GaleforceID) Acc(BlossomID) ExoticCandy 
+SHORT StatAcc(MuscleBandT3_BoostIndex) StatAcc(WiseGlassesT3_BoostIndex) StatAcc(VintageBoots_BoostIndex) StatAcc(EnergyBandT3_BoostIndex) StatAcc(EnergyBandT4_BoostIndex) 
 SHORT 0 // Terminator 
+
+
+
+
+
+/* ALIGN 4 
+DoNotRandomizeItemList:
+// maybe make this? 
+SHORT */ 
+
 
 #define CB_Entry(ClassID, Tier) "BYTE Tier" 
 
@@ -417,10 +453,6 @@ CB_Entry(Unused78ID              , DoNotRandomize      )
 CB_Entry(Unused79ID              , DoNotRandomize      )
 CB_Entry(SnagID                  , DoNotRandomize      )
 CB_Entry(Unused80ID              , DoNotRandomize      )
-
-
-
-
 
 
 

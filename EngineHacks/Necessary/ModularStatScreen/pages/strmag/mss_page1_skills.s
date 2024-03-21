@@ -142,15 +142,15 @@ b skipliterals
 .ltorg
 
 ShowStats3:
-draw_str_bar_at 16, 3
-draw_mag_bar_at 16, 5
+draw_str_bar_at_getter 16, 3
+draw_mag_bar_at_getter 16, 5
 
-draw_def_bar_at 16, 7
-draw_res_bar_at 16, 9
+draw_def_bar_at_getter 16, 7
+draw_res_bar_at_getter 16, 9
 
-draw_spd_bar_at 24, 5
-draw_skl_bar_at 24, 7
-draw_luck_bar_at 24, 9
+draw_spd_bar_at_getter 24, 5
+draw_skl_bar_at_getter 24, 7
+draw_lck_bar_at_getter 24, 9
 
 draw_textID_at 21, 3, 0x4f6 @move
 draw_move_bar_with_getter_at 24, 3
@@ -162,7 +162,7 @@ skipliterals:
 
 .set NoAltIconDraw, 1 @this is the piece that makes them use a separate sheet
 
-mov r0, r8
+mov r0, r8 @ [2026bb0..2026bb3]!!
 ldr r1, =Skill_Getter
 mov lr, r1
 .short 0xf800 @skills now stored in the skills buffer

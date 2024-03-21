@@ -13,6 +13,9 @@ push {lr}
 blh GetGameClock 
 ldr r3, =StartTimeSeedRamLabel
 ldr r3, [r3] 
+bl HashSeed
+ldr r3, =StartTimeSeedRamLabel
+ldr r3, [r3] 
 str r0, [r3] 
 pop {r0} 
 bx r0 
@@ -42,7 +45,7 @@ bl CountListSize_Byte
 mov r1, r0 @ max 
 mov r0, r4 @ class id 
 
-bl HashByte_N 
+bl HashByte_Ch 
 @(u8 number, int max)
 lsl r0, #24 
 lsr r0, #24 @ byte only 
@@ -160,6 +163,7 @@ strb r0, [r4, #0x1A] @ con bonus
 
 mov r0, r4 
 bl RandomizeStats 
+mov r1, #0 @ vanilla expects this 
 pop {r0} 
 bx r0 
 .ltorg 
